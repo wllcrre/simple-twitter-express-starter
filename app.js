@@ -33,8 +33,10 @@ app.use((req, res, next) => {
   next()
 })
 
-
-app.engine('handlebars', handlebars({ defaultLayout: 'main' })) //handlebars v3.1.0 優化中已直接帶入，故可不寫
+app.engine('handlebars', handlebars({
+  defaultLayout: 'main',
+  helpers: require('./config/handlebars-helpers.js')
+})) //handlebars v3.1.0 優化中已直接帶入，故可不寫
 
 app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: true }))// for http POST, req.body //app.use: 所有的請求都會先被 bodyParser 進行處理

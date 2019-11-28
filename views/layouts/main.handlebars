@@ -19,9 +19,11 @@
       </ul>
       <div>
 
+        {{#ifCond user.role "admin"}}
         <span>
           <a href="/admin/tweets" style="color: white;margin-right: 10px;">後台</a>
         </span>
+        {{/ifCond}}
 
         {{#if user}}
         <span style="color: white;margin-right: 10px;">Hi, {{user.email}}</span>
