@@ -38,7 +38,7 @@ const userController = {
 
   signIn: (req, res) => {
     req.flash('success_messages', '成功登入！')
-    res.redirect('/tweets')
+    res.redirect('/')
   },
 
   logout: (req, res) => {
@@ -46,6 +46,7 @@ const userController = {
     req.logout()
     res.redirect('/signin')
   }
+
 }
 
 module.exports = userController
