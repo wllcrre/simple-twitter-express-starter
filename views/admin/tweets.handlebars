@@ -1,0 +1,38 @@
+<h1>Tweets 後台</h1>
+
+<a href='/admin/tweets/create'>
+  <button type="button" class="btn btn-primary">New Tweet</button>
+</a>
+
+<br />
+<br />
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">uid</th>
+      <th scope="col">description</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each tweets}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <th scope="row">{{this.UserId}}</th>
+      <td>{{this.description}}</td>
+      <td>
+        <button type="button" class="btn btn-link">
+          <a href="/admin/tweets/{{this.id}}">
+            Show
+          </a>
+        </button>
+        <form action="/admin/tweets/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-link">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
