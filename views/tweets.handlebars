@@ -14,17 +14,17 @@
       </div>
 
       <div class="card-body">
-        {{#each tweets}}
+        {{#each Tweets}}
         <div class="row">
-          <div class="col-md-4"><img class="img-responsive center-block" src="{{tweet.image}}"
-              style="width: 250px;margin-bottom: 25px;"></div>
+          <div class="col-md-4"><img class="img-responsive center-block rounded float-left" src="{{this.User.avatar}}"
+              style="width: 150px;margin-bottom: 25px;"></div>
           <div class="col-md-8">
             <h4>
-              <a href="/tweets/{{this.id}}">{{this.name}}</a>
+              <a href="/tweets/{{this.id}}">{{this.User.name}}</a>
               <small>, {{moment this.createdAt}}</small>
             </h4>
             <p>{{this.description}}</p>
-            <a href="/tweets/{{tweet.id}}/replies">Reply(2)</a>
+            <a href="/tweets/{{tweet.id}}/replies">Reply(2)</a> {{!-- {{功能再追蹤}} --}}
             <hr>
           </div>
         </div>
