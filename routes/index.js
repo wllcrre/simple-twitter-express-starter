@@ -11,6 +11,16 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
   }
 
 
+  const authenticatedAdmin = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.role === "admin") { return next() }
+      return res.redirect('/')
+    }
+    res.redirect('/signin')
+  }
+
+
+
   app.get('/', authenticated, (req, res) => res.render('tweets'))
 
   app.get('/signup', userController.signUpPage)
@@ -25,7 +35,9 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
   app.get('/admin', (req, res) => res.redirect('/admin/tweets'))
 
   // 在 /admin/tweets 底下則交給 adminController.getTweets 處理
-  app.get('/admin/tweets', adminController.getTweets)
+  app.get('/admin/tweets', authenticatedAdmin, adminController.getTweets)
+  app.delete('/admin/tweets/:id', authenticatedAdmin, adminController.deleteTweet)
+
 
 
 
