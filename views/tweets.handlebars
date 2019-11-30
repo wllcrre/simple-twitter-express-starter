@@ -2,7 +2,8 @@
   <div class="col-md-8">
     <form action="/" method="POST">
       <div class="form-group">
-        <textarea placeholder="What's on your mind?" class="form-control" id="text" name="text" rows="4"></textarea>
+        <textarea maxlength="140" placeholder="What's on your mind? (maxlength is 140 words)" class="form-control"
+          id="text" name="text" rows="4" required></textarea>
       </div>
       <input type="hidden" name="tweetId" value="{{tweet.id}}" />
       <button type="submit" class="btn btn-primary float-right">Tweet</button>
@@ -14,21 +15,27 @@
       </div>
 
       <div class="card-body">
-        {{#each Tweets}}
-        <div class="row">
-          <div class="col-md-4"><img class="img-responsive center-block rounded float-left" src="{{this.User.avatar}}"
-              style="width: 150px;margin-bottom: 25px;"></div>
-          <div class="col-md-8">
-            <h4>
-              <a href="/tweets/{{this.id}}">{{this.User.name}}</a>
-              <small>, {{moment this.createdAt}}</small>
-            </h4>
-            <p>{{this.description}}</p>
-            <a href="/tweets/{{tweet.id}}/replies">Reply(2)</a> {{!-- {{功能再追蹤}} --}}
-            <hr>
+
+        <div class="container">
+          {{#each feeds}}
+          <div class="row">
+            <div class="col-md-4"><img class="img-thumbnail" src="{{this.User.avatar}}"></div>
+            <div class="col-md-8">
+              <h4>
+                <a href="/tweets/{{this.id}}">{{this.User.name}}</a>
+                <small>, {{moment this.createdAt}}</small>
+              </h4>
+              <p>{{this.description}}</p>
+              {{#if this.Reply.length }}
+              <a href="/tweets/{{tweet.id}}/replies">Reply({{this.Reply.length}})</a> {{!-- {{功能再追蹤}} --}}
+              {{/if}}
+
+            </div>
           </div>
+          <hr>
+          {{/each}}
         </div>
-        {{/each}}
+
       </div>
     </div>
   </div>
@@ -38,10 +45,9 @@
         Popular
       </div>
       <div class="card-body">
-        {{#each likes}}
+        {{#each tweets}}
         <div class="row">
-          <div class="col-md-4"><img class="img-responsive center-block" src="{{this.image}}"
-              style="width: 250px;margin-bottom: 25px;"></div>
+          <div class="col-md-4"><img class="img-thumbnail" src="{{this.User.avatar}}"></div>
           <div class="col-md-8">
             <h4>
               <a href="/tweets/{{this.id}}">{{this.name}}</a>
@@ -55,7 +61,7 @@
             <form action="/follow/{{user.id}}" method="POST" style="display: contents;"><button type="submit"
                 class="btn btn-primary">Follow</button></form>
             {{/if}}
-            <a href="/users/{{this.id}}/tweets">Follow</a>
+
             <hr>
           </div>
         </div>

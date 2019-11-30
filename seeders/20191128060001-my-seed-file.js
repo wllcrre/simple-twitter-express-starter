@@ -9,7 +9,7 @@ module.exports = {
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       name: "root",
       introduction: faker.lorem.text(),
-      avatar: faker.name.findName(),
+      avatar: faker.image.imageUrl(),
       role: 'admin',
       createdAt: new Date(),
       updatedAt: new Date()
@@ -18,7 +18,7 @@ module.exports = {
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       name: "user1",
       introduction: faker.lorem.text(),
-      avatar: faker.name.findName(),
+      avatar: faker.image.imageUrl(),
       role: 'user',
       createdAt: new Date(),
       updatedAt: new Date()
@@ -27,7 +27,7 @@ module.exports = {
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       name: "user2",
       introduction: faker.lorem.text(),
-      avatar: faker.name.findName(),
+      avatar: faker.image.imageUrl(),
       role: 'user',
       createdAt: new Date(),
       updatedAt: new Date()
