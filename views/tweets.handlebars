@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-8">
-    <form action="/" method="POST">
+    <form action="/tweets" method="POST">
       <div class="form-group">
         <textarea maxlength="140" placeholder="What's on your mind? (maxlength is 140 words)" class="form-control"
           id="text" name="text" rows="4" required></textarea>
@@ -10,14 +10,12 @@
     </form>
     <br /><br />
     <div class="card">
-      <div class="card-header">
-        Feeds
-      </div>
+
 
       <div class="card-body">
 
         <div class="container">
-          {{#each feeds}}
+          {{#each tweets}}
           <div class="row">
             <div class="col-md-4"><img class="img-thumbnail" src="{{this.User.avatar}}"></div>
             <div class="col-md-8">
@@ -26,9 +24,14 @@
                 <small>, {{moment this.createdAt}}</small>
               </h4>
               <p>{{this.description}}</p>
-              {{#if this.Reply.length }}
-              <a href="/tweets/{{tweet.id}}/replies">Reply({{this.Reply.length}})</a> {{!-- {{功能再追蹤}} --}}
-              {{/if}}
+              <div class="row">
+                {{#if this.Reply.length }}
+                <a href="/tweets/{{this.id}}/replies">Reply({{this.Reply.length}})</a>
+                {{/if}}
+                {{#if this.Like.length }}
+                <p>Like({{this.Like.length}})</p>
+                {{/if}}
+              </div>
 
             </div>
           </div>
@@ -45,14 +48,14 @@
         Popular
       </div>
       <div class="card-body">
-        {{#each tweets}}
+        {{#each users}}
         <div class="row">
-          <div class="col-md-4"><img class="img-thumbnail" src="{{this.User.avatar}}"></div>
+          <div class="col-md-4"><img class="img-thumbnail" src="{{this.avatar}}"></div>
           <div class="col-md-8">
             <h4>
               <a href="/tweets/{{this.id}}">{{this.name}}</a>
             </h4>
-            <p>{{this.description}}</p>
+            <p>{{this.introduction}}</p>
 
             {{#if isFollowed }}
             <form action="/follow/{{user.id}}?_method=DELETE" method="POST" style="display: contents;"><button
