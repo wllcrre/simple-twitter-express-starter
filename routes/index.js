@@ -1,6 +1,9 @@
 const userController = require('../controllers/userControllers')
 const tweetController = require('../controllers/tweetControllers')
 
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
+
 module.exports = (app, passport) => { // 記得這邊要接收 passport
 
   const authenticated = (req, res, next) => {
@@ -28,6 +31,10 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
 
   app.post('/following/:userId', authenticated, userController.addFollowing)
   app.delete('/following/:userId', authenticated, userController.removeFollowing)
+
+  app.get('/users/:id', authenticated, userController.getUser)
+  app.get('/users/:id/edit', authenticated, userController.editUser)
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)

@@ -1,7 +1,10 @@
 const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
+const Tweet = db.Tweet
 const User = db.User
+const Like = db.Like
 const Followship = db.Followship
+const Reply = db.Reply
 
 const userController = {
   signUpPage: (req, res) => {
@@ -47,6 +50,7 @@ const userController = {
     req.logout()
     res.redirect('/signin')
   },
+
   addFollowing: (req, res) => {
     return Followship.create({
       followerId: req.user.id,
@@ -70,7 +74,75 @@ const userController = {
             return res.redirect('back')
           })
       })
-  }
+  },
+
+  getUser: (req, res) => {
+    return User.findByPk(req.params.id, {
+
+      include: [
+        Tweet,
+        Like,
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
+    }).then(user => {
+      const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
+      user.introduction = user.introduction.substring(0, 140)
+
+      Tweet.findAll({
+        where: { UserId: req.user.id },
+        order: [['createdAt', 'DESC']],
+        include: [User]
+      }).then(tweets => {
+
+        tweets = tweets.map(tweet => ({
+          ...tweet.dataValues,
+          description: tweet.dataValues.description.substring(0, 140),
+        }))
+
+        return res.render('users/profile', {
+          profile: user,
+          isFollowed: isFollowed,
+          tweets: tweets
+        })
+      })
+
+    })
+  },
+  editUser: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      return res.render('users/edit', { user: user })
+    })
+  },
+  putUser: (req, res) => {
+    if (Number(req.params.id) !== Number(req.user.id)) {
+      return res.redirect(`/users/${req.params.id}`)
+    }
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        return User.findByPk(req.params.id)
+          .then((user) => {
+            user.update({
+              name: req.body.name,
+              image: img.data.link
+            }).then((user) => {
+              res.redirect(`/users/${req.params.id}`)
+            })
+          })
+      })
+    } else {
+      return User.findByPk(req.params.id)
+        .then((user) => {
+          user.update({
+            name: req.body.name
+          }).then((user) => {
+            res.redirect(`/users/${req.params.id}`)
+          })
+        })
+    }
+  },
 }
 
 module.exports = userController

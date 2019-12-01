@@ -28,7 +28,6 @@ const tweetController = {
 
       Tweet.findAll({
         where: { UserId: req.user.id },
-        limit: 10,
         order: [['createdAt', 'DESC']],
         include: [User]
       }).then(tweets => {
