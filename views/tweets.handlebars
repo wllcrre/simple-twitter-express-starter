@@ -57,13 +57,15 @@
             </h4>
             <p>{{this.introduction}}</p>
 
-            {{#if isFollowed }}
-            <form action="/follow/{{user.id}}?_method=DELETE" method="POST" style="display: contents;"><button
-                type="submit" class="btn btn-danger">unFollow</button></form>
-            {{else}}
-            <form action="/follow/{{user.id}}" method="POST" style="display: contents;"><button type="submit"
-                class="btn btn-primary">Follow</button></form>
-            {{/if}}
+            <p>
+              {{#if this.isFollowed }}
+              <form action="/following/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+                  type="submit" class="btn btn-danger">unFollow</button></form>
+              {{else}}
+              <form action="/following/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
+                  class="btn btn-primary">Follow</button></form>
+              {{/if}}
+            </p>
 
             <hr>
           </div>

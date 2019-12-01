@@ -26,6 +26,9 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
   app.post('/tweets', authenticated, tweetController.postTweets)
   //app.delete('/tweets/:id', authenticatedAdmin, commentController.deleteComment)
 
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
+
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
 
