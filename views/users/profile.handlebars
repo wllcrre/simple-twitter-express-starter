@@ -34,9 +34,7 @@
       </div>
     </div>
     <div class="col-md-8">
-
       <div class="card-body">
-
         <div class="container">
           {{#each tweets}}
           <div class="row">
@@ -47,24 +45,21 @@
                 <small>, {{moment this.createdAt}}</small>
               </h4>
               <p>{{this.description}}</p>
-              <div class="row">
-                {{#if this.Reply.length }}
-                <a href="/tweets/{{this.id}}/replies">Reply({{this.Reply.length}})</a>
-                {{/if}}
-                {{#if this.Like.length }}
-                <p>Like({{this.Like.length}})</p>
-                {{/if}}
-              </div>
+
+              {{#if this.Replies.length }}
+              <a href="/tweets/{{this.id}}/replies">Reply({{this.Replies.length}}) </a>
+              {{/if}}
+              {{#if this.Likes.length }}
+              <p style="display: inline;"> Like({{this.Likes.length}})</p>
+              {{/if}}
+
 
             </div>
           </div>
           <hr>
           {{/each}}
         </div>
-
       </div>
-
     </div>
-
   </div>
 </div>
