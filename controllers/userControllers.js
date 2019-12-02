@@ -6,6 +6,9 @@ const Like = db.Like
 const Followship = db.Followship
 const Reply = db.Reply
 
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+
 const userController = {
   signUpPage: (req, res) => {
     return res.render('signup')
@@ -92,7 +95,7 @@ const userController = {
       Tweet.findAll({
         where: { UserId: req.user.id },
         order: [['createdAt', 'DESC']],
-        include: [User]
+        include: [Like, Reply, User]
       }).then(tweets => {
 
         tweets = tweets.map(tweet => ({
@@ -126,7 +129,8 @@ const userController = {
           .then((user) => {
             user.update({
               name: req.body.name,
-              image: img.data.link
+              introduction: req.body.introduction,
+              avatar: img.data.link
             }).then((user) => {
               res.redirect(`/users/${req.params.id}`)
             })
@@ -136,7 +140,8 @@ const userController = {
       return User.findByPk(req.params.id)
         .then((user) => {
           user.update({
-            name: req.body.name
+            name: req.body.name,
+            introduction: req.body.introduction,
           }).then((user) => {
             res.redirect(`/users/${req.params.id}`)
           })

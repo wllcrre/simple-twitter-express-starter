@@ -34,7 +34,7 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
 
   app.get('/users/:id', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticated, userController.editUser)
-  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
+  app.put('/users/:id', authenticated, upload.single('avatar'), userController.putUser)
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
