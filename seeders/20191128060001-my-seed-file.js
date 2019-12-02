@@ -41,12 +41,21 @@ module.exports = {
           updatedAt: new Date()
         })
       ), {});
+    queryInterface.bulkInsert('Likes',
+      Array.from({ length: 50 }).map(_d =>
+        ({
+          UserId: Math.floor(Math.random() * 3) + 1,
+          TweetId: Math.floor(Math.random() * 50) + 1,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+      ), {});
     return queryInterface.bulkInsert('Replies',
-      [...Array(150)].map((item, index) => index).map(i =>
+      Array.from({ length: 150 }).map(_d =>
         ({
           comment: faker.lorem.sentence(),
           UserId: Math.floor(Math.random() * 3) + 1,
-          TweetId: i % 50 + 1,
+          TweetId: Math.floor(Math.random() * 50) + 1,
           createdAt: new Date(),
           updatedAt: new Date()
         })

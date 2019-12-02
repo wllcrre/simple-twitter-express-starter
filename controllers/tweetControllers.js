@@ -3,10 +3,7 @@ const Tweet = db.Tweet
 const User = db.User
 const Like = db.Like
 const Followship = db.Followship
-/*const Followship = db.Followship
 const Reply = db.Reply
-
-*/
 
 const tweetController = {
 
@@ -25,16 +22,14 @@ const tweetController = {
       }))
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount).splice(0, 10)
 
-
       Tweet.findAll({
-        where: { UserId: req.user.id },
         order: [['createdAt', 'DESC']],
-        include: [User]
+        include: [Like, Reply, User]
       }).then(tweets => {
-
         tweets = tweets.map(tweet => ({
           ...tweet.dataValues,
           description: tweet.dataValues.description.substring(0, 140),
+
         }))
 
         return res.render('Tweets', {
