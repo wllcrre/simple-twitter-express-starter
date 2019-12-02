@@ -1,0 +1,64 @@
+<h1>Users</h1>
+
+
+<a href='/admin/tweets'>
+  Tweets
+</a>
+<span> | </span>
+<a href='/admin/users'>
+  Users
+</a>
+
+<br />
+<br />
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Role</th>
+      <th scope="col">推播數</th>
+      <th scope="col">跟隨者數</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.role}}</td>
+      <td>{{this.Tweets.length}}</td>
+      <td>{{this.Followers.length}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+
+
+
+
+
+{{!-- <tbody>
+    {{#each users}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.role}}</td>
+    </tr>
+    {{#each this.Tweets}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.description}}</td>
+    </tr>
+    {{/each}}
+  
+    userID: {{this.id}}
+    計算追蹤者人數:{{this.Followers.length}}
+    {{#each this.Followers}}
+    FollowerID:{{this.id}}
+    {{/each}}
+  
+    {{/each}}
+  </tbody> --}}
