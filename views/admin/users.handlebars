@@ -15,11 +15,13 @@
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">ID</th>
       <th scope="col">Name</th>
       <th scope="col">Role</th>
-      <th scope="col">推播數</th>
-      <th scope="col">跟隨者數</th>
+      <th scope="col">Tweets</th>
+      <th scope="col">Followers</th>
+      <th scope="col">LikedTweets</th>
+      <th scope="col">推播被like數量</th>
     </tr>
   </thead>
   <tbody>
@@ -30,6 +32,8 @@
       <td>{{this.role}}</td>
       <td>{{this.Tweets.length}}</td>
       <td>{{this.Followers.length}}</td>
+      <td>{{this.LikedTweets.length}}</td>
+      <td>{{this.LikedUsersCount}}</td>
     </tr>
     {{/each}}
   </tbody>

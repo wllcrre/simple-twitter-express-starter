@@ -6,11 +6,20 @@ const User = db.User
 
 const adminController = {
   getUsers: (req, res) => {
+
     return User.findAll({
       include:
         [
           {
-            model: Tweet
+            model: Tweet,
+            include: [{
+              model: User,
+              as: "LikedUsers"
+            }]
+          },
+          {
+            model: Tweet,
+            as: "LikedTweets"
           },
           {
             model: User,
@@ -23,37 +32,24 @@ const adminController = {
 
         ]
     }).then(users => {
+
+      // 整理 users 資料
+      users = users.map(user => ({
+        ...user.dataValues,
+
+        TweetsCount: user.Tweets.length,
+
+        // 計算Tweet 被Liked次數    注意: reduce 用法,他可以與前一個回傳的值再次作運算
+        LikedUsersCount: user.dataValues.Tweets.reduce(function (preValue, tweet) {
+          return preValue + tweet.LikedUsers.length;  // 與前一個值相加
+        }, 0)
+
+      }))
+
+      // 按推播文數排序
+      users = users.sort((a, b) => b.Tweets.length - a.Tweets.length)
+
       return res.render('admin/users', { users: users })
-    })
-  },
-
-
-  getUser: (req, res, callback) => {
-    return User.findByPk(req.params.id, {
-      include:
-        [
-          {
-            model: Comment,
-            include: [Restaurant]
-          },
-          {
-            model: Restaurant,
-            as: "FavoritedRestaurants"
-          },
-          {
-            model: User,
-            as: "Followers"
-          },
-          {
-            model: User,
-            as: "Followings"
-          }
-
-        ]
-    }).then(user => {
-      callback({
-        user: user
-      })
     })
   },
 
