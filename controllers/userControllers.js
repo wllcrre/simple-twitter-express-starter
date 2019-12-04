@@ -5,7 +5,7 @@ const User = db.User
 const Like = db.Like
 const Followship = db.Followship
 const Reply = db.Reply
-
+require('dotenv').config()
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
@@ -132,7 +132,7 @@ const userController = {
               introduction: req.body.introduction,
               avatar: img.data.link
             }).then((user) => {
-              res.redirect(`/users/${req.params.id}`)
+              res.redirect(`/users/${req.params.id}/tweets`)
             })
           })
       })
@@ -143,11 +143,13 @@ const userController = {
             name: req.body.name,
             introduction: req.body.introduction,
           }).then((user) => {
-            res.redirect(`/users/${req.params.id}`)
+            res.redirect(`/users/${req.params.id}/tweets`)
           })
         })
     }
   },
+
+
 }
 
 module.exports = userController

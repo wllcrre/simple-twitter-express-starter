@@ -3,11 +3,10 @@ const helpers = require('./_helpers');
 const handlebars = require('express-handlebars')
 const flash = require('connect-flash')
 const session = require('express-session')
-const passport = require('./config/passport')
+
+
 const methodOverride = require('method-override')
-
-
-
+const passport = require('./config/passport')
 
 const db = require('./models') // 引入資料庫
 const bodyParser = require('body-parser') // for http POST, req.body 

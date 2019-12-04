@@ -50,7 +50,56 @@ const tweetController = {
       })
   },
 
+  getReply: (req, res) => {
+    return Tweet.findByPk(req.params.tweet_id, {
+      include: [Like, Reply, User]
+    }).then(tweet => {
+      console.log(tweet.UserId)
+      User.findByPk(tweet.UserId, {
 
+        include: [
+          Tweet,
+          Like,
+          { model: User, as: 'Followers' },
+          { model: User, as: 'Followings' }
+        ]
+      }).then(user => {
+        const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
+        user.introduction = user.introduction.substring(0, 140)
+
+        Reply.findAll({
+          where: { TweetId: req.params.tweet_id },
+          order: [['createdAt', 'DESC']],
+          include: [User]
+        }).then(replies => {
+
+          replies = replies.map(reply => ({
+            ...reply.dataValues,
+            comment: reply.dataValues.comment.substring(0, 140),
+          }))
+
+          return res.render('replies', {
+            replies: replies,
+            tweet: tweet,
+            profile: user,
+            loginUser: req.user,
+            isFollowed: isFollowed,
+          })
+        })
+      })
+    })
+  },
+
+  postReply: (req, res) => {
+    return Reply.create({
+      comment: req.body.text,
+      UserId: req.user.id,
+      TweetId: req.params.tweet_id
+    })
+      .then((tweet) => {
+        return res.redirect('replies')
+      })
+  },
 }
 
 module.exports = tweetController
