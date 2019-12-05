@@ -57,6 +57,31 @@ const userController = {
     })
   },
 
+  getUserFollowers: (req, res) => {
+    return User.findByPk(req.params.id, {
+      include:
+        [
+          {
+            model: User,
+            as: "Followers"
+          }
+        ]
+    }).then(user => {
+      // console.log(user.Followings)
+
+      // console.log('====================')
+      // console.log('====================')
+      // user.Followings.forEach((user) => {
+      //   console.log(user.createdAt)
+      //   console.log(user.Followship.dataValues.createdAt)
+      // })
+
+      //排序依照追蹤紀錄成立的時間，愈新的在愈前面
+      user.Followers = user.Followers.sort((a, b) => b.Followship.dataValues.createdAt - a.Followship.dataValues.createdAt)
+      return res.render('userFollowers', { user: user })
+    })
+  },
+
   signUpPage: (req, res) => {
     return res.render('signup')
   },

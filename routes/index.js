@@ -24,6 +24,7 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
   app.get('/', authenticated, (req, res) => res.render('tweets'))
   app.get('/users/:id/likes', userController.getUserLikes)
   app.get('/users/:id/followings', userController.getUserFollowings)
+  app.get('/users/:id/followers', userController.getUserFollowers)
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)

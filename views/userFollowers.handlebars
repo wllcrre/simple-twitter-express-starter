@@ -1,0 +1,23 @@
+<br>
+<br>
+<h1>Followers</h1>
+<br>
+
+<h2>{{user.name}}</h2>
+<br>
+
+{{#each user.Followers}}
+
+following : {{this.name}}<br>
+user created : {{moment this.createdAt}}<br>
+following created : {{moment this.Followship.dataValues.createdAt}}<br>
+
+{{this.introduction}}<br>
+
+<form action="/followships/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
+    class="btn btn-danger">Unfollow</button></form>
+
+<form action="/followships/{{this.id}}" method="POST"><button type="submit" class="btn btn-danger">Follow</button>
+</form>
+
+{{/each}}
