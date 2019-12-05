@@ -1,0 +1,17 @@
+<br>
+<br>
+<h1>Like</h1>
+<br>
+
+<h2>{{user.name}}</h2>
+<br>
+
+{{#each user.LikedTweets}}
+{{this.User.name}}<br>
+Like Time:{{moment this.Like.createdAt}}<br>
+Tweet Time:{{moment this.User.createdAt}}<br>
+{{this.description}}<br>
+Likes : {{this.LikedUsers.length}}<br>
+Replies : {{this.Replies.length}}<br>
+----------------<br>
+{{/each}}

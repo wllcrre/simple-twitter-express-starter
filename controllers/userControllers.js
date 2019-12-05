@@ -1,8 +1,37 @@
 const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
 const User = db.User
+const Tweet = db.Tweet
+const Like = db.Like
+const Reply = db.Reply
 
 const userController = {
+  getUserLikes: (req, res) => {
+    return User.findByPk(req.params.id, {
+      include:
+        [
+          {
+            model: Tweet,
+            as: "LikedTweets",
+            order: [
+              [{ Like }, 'createdAt', 'DESC']
+            ],
+            include: [
+              { model: User },
+              { model: Reply },
+              {
+                model: User,
+                as: "LikedUsers"
+              }
+            ]
+          }
+        ]
+    }).then(user => {
+      user.LikedTweets = user.LikedTweets.sort((a, b) => b.createdAt - a.createdAt)
+      return res.render('userLikes', { user: user })
+    })
+  },
+
   signUpPage: (req, res) => {
     return res.render('signup')
   },
