@@ -1,26 +1,15 @@
 const userController = require('../controllers/userControllers')
 const tweetController = require('../controllers/tweetControllers')
-
+const helpers = require('../_helpers');
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 
-module.exports = (app, passport) => { // 記得這邊要接收 passport
-
+module.exports = (app, passport) => {
   const authenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
+    if (helpers.ensureAuthenticated(req)) {
       return next()
     }
     res.redirect('/signin')
-  }
-  const authenticatedUser = (req, res, next) => {
-    if (req.isAuthenticated()) {
-      if (req.user.id == req.params.id) {
-        return next()
-      } else {
-        req.flash('error_messages', 'Authentication error!')
-        return res.redirect(`/users/${req.user.id}`)
-      }
-    }
   }
 
   app.get('/', authenticated, (req, res) => res.redirect('tweets'))
@@ -33,6 +22,9 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
 
   app.post('/following/:userId', authenticated, userController.addFollowing)
   app.delete('/following/:userId', authenticated, userController.removeFollowing)
+
+  app.post('/tweets/:id/like', authenticated, userController.addLike)
+  app.post('/tweets/:id/unlike', authenticated, userController.removeLike)
 
   app.get('/users/:id/tweets', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticated, userController.editUser)
