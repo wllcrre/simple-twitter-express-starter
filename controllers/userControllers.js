@@ -90,6 +90,41 @@ const userController = {
     })
   },
 
+  getUser: (req, res) => {
+    return User.findByPk(req.params.id, {
+
+      include: [
+        Tweet,
+        Like,
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
+    }).then(user => {
+      const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
+      user.introduction = user.introduction.substring(0, 140)
+
+      Tweet.findAll({
+        where: { UserId: req.params.id },
+        order: [['createdAt', 'DESC']],
+        include: [Like, Reply, User]
+      }).then(tweets => {
+
+        tweets = tweets.map(tweet => ({
+          ...tweet.dataValues,
+          description: tweet.dataValues.description.substring(0, 140),
+          isLiked: req.user.LikedTweets.map(d => d.id).includes(tweet.id)
+        }))
+
+        return res.render('users/profile', {
+          profile: user,
+          isFollowed: isFollowed,
+          tweets: tweets
+        })
+      })
+
+    })
+  },
+
   signUpPage: (req, res) => {
     return res.render('signup')
   },

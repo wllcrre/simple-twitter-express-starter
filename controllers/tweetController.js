@@ -27,13 +27,11 @@ const tweetController = {
         order: [['createdAt', 'DESC']],
         include: [Like, Reply, User]
       }).then(tweets => {
-
-        // foud bug heree : Unhandled rejection TypeError: Cannot read property 'map' of undefined
-        // tweets = tweets.map(tweet => ({
-        //   ...tweet.dataValues,
-        //   description: tweet.dataValues.description.substring(0, 140),
-        //   isLiked: req.user.LikedTweets.map(d => d.id).includes(tweet.id)
-        // }))
+        tweets = tweets.map(tweet => ({
+          ...tweet.dataValues,
+          description: tweet.dataValues.description.substring(0, 140),
+          isLiked: req.user.LikedTweets.map(d => d.id).includes(tweet.id)
+        }))
 
         return res.render('Tweets', {
           users: users,
