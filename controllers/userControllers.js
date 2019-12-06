@@ -13,9 +13,6 @@ const userController = {
           {
             model: Tweet,
             as: "LikedTweets",
-            order: [
-              [{ Like }, 'createdAt', 'DESC']
-            ],
             include: [
               { model: User },
               { model: Reply },
@@ -27,7 +24,18 @@ const userController = {
           }
         ]
     }).then(user => {
-      user.LikedTweets = user.LikedTweets.sort((a, b) => b.createdAt - a.createdAt)
+      // console.log(user.LikedTweets)
+
+      // console.log('====================')
+      // console.log('====================')
+      // user.LikedTweets.forEach((tweet) => {
+      //   console.log(tweet.createdAt)
+      //   console.log(tweet.Like.dataValues.createdAt)
+      // })
+
+      // user.LikedTweets = user.LikedTweets.sort((a, b) => b.createdAt - a.createdAt)
+      user.LikedTweets = user.LikedTweets.sort((a, b) => b.Like.dataValues.createdAt - a.Like.dataValues.createdAt)
+
       return res.render('userLikes', { user: user })
     })
   },
