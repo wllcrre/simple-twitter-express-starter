@@ -22,6 +22,7 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
 
   app.get('/', (req, res) => res.redirect('tweets'))
   app.get('/tweets', authenticated, tweetController.getTweets)
+  app.post('/tweets', authenticated, tweetController.postTweets)
 
   app.get('/', authenticated, (req, res) => res.render('tweets'))
   app.get('/users/:id/likes', userController.getUserLikes)

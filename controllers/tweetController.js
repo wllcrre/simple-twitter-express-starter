@@ -40,6 +40,15 @@ const tweetController = {
       })
     })
   },
+  postTweets: (req, res) => {
+    return Tweet.create({
+      description: req.body.text,
+      UserId: req.user.id
+    })
+      .then((tweet) => {
+        return res.redirect('Tweets')
+      })
+  },
 }
 
 module.exports = tweetController
