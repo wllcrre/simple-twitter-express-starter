@@ -1,5 +1,6 @@
 const userController = require('../controllers/userControllers')
 const adminController = require('../controllers/adminController.js')
+const tweetController = require('../controllers/tweetController')
 
 module.exports = (app, passport) => { // 記得這邊要接收 passport
 
@@ -19,7 +20,8 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
     res.redirect('/signin')
   }
 
-
+  app.get('/', (req, res) => res.redirect('tweets'))
+  app.get('/tweets', authenticated, tweetController.getTweets)
 
   app.get('/', authenticated, (req, res) => res.render('tweets'))
   app.get('/users/:id/likes', userController.getUserLikes)
