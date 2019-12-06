@@ -1,10 +1,14 @@
 const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
+const fs = require('fs')
 const User = db.User
 const Tweet = db.Tweet
 const Like = db.Like
 const Reply = db.Reply
 const Followship = db.Followship
+require('dotenv').config()
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
   getUserLikes: (req, res) => {
@@ -124,6 +128,100 @@ const userController = {
       })
 
     })
+  },
+  editUser: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      return res.render('users/edit', { user: user })
+    })
+  },
+  putUser: (req, res) => {
+    if (Number(req.params.id) !== Number(req.user.id)) {
+      return res.redirect(`/users/${req.params.id}`)
+    }
+    const { file } = req
+    if (file) {
+
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return User.findByPk(req.params.id)
+            .then((user) => {
+              user.update({
+                name: req.body.name,
+                introduction: req.body.introduction,
+                avatar: file ? `/upload/${file.originalname}` : img.data.link
+              }).then((user) => {
+                res.redirect(`/users/${req.params.id}/tweets`)
+              })
+            })
+        })
+      })
+
+
+    } else {
+      return User.findByPk(req.params.id)
+        .then((user) => {
+          user.update({
+            name: req.body.name,
+            introduction: req.body.introduction,
+          }).then((user) => {
+            res.redirect(`/users/${req.params.id}/tweets`)
+          })
+        })
+    }
+  },
+
+
+
+  putRestaurant: (req, res) => {
+    if (!req.body.name) {
+      req.flash('error_messages', "name didn't exist")
+      return res.redirect('back')
+    }
+
+    const { file } = req
+    if (file) {
+
+
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return Restaurant.findByPk(req.params.id)
+            .then((restaurant) => {
+              restaurant.update({
+                name: req.body.name,
+                tel: req.body.tel,
+                address: req.body.address,
+                opening_hours: req.body.opening_hours,
+                description: req.body.description,
+                image: file ? `/upload/${file.originalname}` : restaurant.image
+              }).then((restaurant) => {
+                req.flash('success_messages', 'restaurant was successfully to update')
+                res.redirect('/admin/restaurants')
+              })
+            })
+        })
+      })
+
+
+
+
+    } else {
+      return Restaurant.findByPk(req.params.id)
+        .then((restaurant) => {
+          restaurant.update({
+            name: req.body.name,
+            tel: req.body.tel,
+            address: req.body.address,
+            opening_hours: req.body.opening_hours,
+            description: req.body.description,
+            image: restaurant.image
+          }).then((restaurant) => {
+            req.flash('success_messages', 'restaurant was successfully to update')
+            res.redirect('/admin/restaurants')
+          })
+        })
+    }
   },
 
   addFollowing: (req, res) => {

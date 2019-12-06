@@ -36,6 +36,9 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use('/upload', express.static(__dirname + '/upload'))
+
+
 app.engine('handlebars', handlebars({
   defaultLayout: 'main',
   helpers: require('./config/handlebars-helpers.js')
