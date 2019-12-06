@@ -33,6 +33,12 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
   app.get('/users/:id/followers', userController.getUserFollowers)
   app.get('/users/:id/tweets', authenticated, userController.getUser)
 
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
+
+  app.post('/tweets/:id/like', authenticated, userController.addLike)
+  app.post('/tweets/:id/unlike', authenticated, userController.removeLike)
+
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
 

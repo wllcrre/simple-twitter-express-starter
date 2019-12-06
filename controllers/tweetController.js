@@ -12,13 +12,14 @@ const tweetController = {
       where: { id: { $not: req.user.id } },
       include: [
         { model: User, as: 'Followers' },
-        // { model: Tweet, as: 'LikedTweets' }
+        { model: User, as: 'Followings' }
       ]
     }).then(users => {
       users = users.map(user => ({
         ...user.dataValues,
         introduction: user.dataValues.introduction.substring(0, 140),
         FollowerCount: user.Followers.length,
+        isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
 
       }))
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount).splice(0, 10)
