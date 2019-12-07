@@ -17,7 +17,7 @@ const tweetController = {
     }).then(users => {
       users = users.map(user => ({
         ...user.dataValues,
-        introduction: user.dataValues.introduction.substring(0, 140),
+        introduction: user.dataValues.introduction ? user.dataValues.introduction.substring(0, 140) : "",
         FollowerCount: user.Followers.length,
         isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
 
