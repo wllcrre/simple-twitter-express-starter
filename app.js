@@ -17,6 +17,12 @@ const bodyParser = require('body-parser') // for http POST, req.body
 const app = express()
 const port = process.env.PORT || 3000
 
+app.get('env')
+app.get('env')
+app.get('env')
+app.get('env')
+app.get('env')
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
