@@ -17,6 +17,10 @@ const bodyParser = require('body-parser') // for http POST, req.body
 const app = express()
 const port = process.env.PORT || 3000
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 // use helpers.getUser(req) to replace req.user
 // use helpers.ensureAuthenticated(req) to replace req.isAuthenticated()
 app.use(methodOverride('_method'))
