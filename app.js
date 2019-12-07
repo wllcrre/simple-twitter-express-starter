@@ -15,7 +15,7 @@ const bodyParser = require('body-parser') // for http POST, req.body
 
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 // use helpers.getUser(req) to replace req.user
 // use helpers.ensureAuthenticated(req) to replace req.isAuthenticated()
