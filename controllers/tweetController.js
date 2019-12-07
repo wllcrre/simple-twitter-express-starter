@@ -34,7 +34,7 @@ const tweetController = {
           isLiked: req.user.LikedTweets.map(d => d.id).includes(tweet.id)
         }))
 
-        return res.render('Tweets', {
+        return res.render('tweets', {
           users: users,
           tweets: tweets
         })
@@ -47,7 +47,7 @@ const tweetController = {
       UserId: req.user.id
     })
       .then((tweet) => {
-        return res.redirect('Tweets')
+        return res.redirect('/tweets')
       })
   },
 
