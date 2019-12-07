@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt-nodejs')
+const bcrypt = require('bcryptjs')
 const db = require('../models')
 const fs = require('fs')
 const User = db.User
