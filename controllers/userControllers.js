@@ -176,7 +176,7 @@ const userController = {
             user.update({
               name: req.body.name,
               introduction: req.body.introduction,
-              avatar: img.data.link
+              avatar: file ? img.data.link : null
             }).then((user) => {
               res.redirect(`/users/${req.params.id}/tweets`)
             })
