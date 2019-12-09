@@ -57,11 +57,7 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
   // 後台
   app.get('/admin', (req, res) => res.redirect('/admin/tweets'))
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
-
-
-  // 在 /admin/tweets 底下則交給 adminController.getTweets 處理
-  // app.get('/admin/tweets', authenticatedAdmin, adminController.getTweets)
-  app.get('/admin/tweets', adminController.getTweets)
+  app.get('/admin/tweets', authenticatedAdmin, adminController.getTweets)
   app.delete('/admin/tweets/:id', authenticatedAdmin, adminController.deleteTweet)
 
 

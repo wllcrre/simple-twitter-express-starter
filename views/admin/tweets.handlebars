@@ -44,11 +44,6 @@
       <th scope="row">{{this.UserId}}</th>
       <td>Re:{{this.comment}}</td>
       <td>
-        <button type="button" class="btn btn-link">
-          <a href="/tweets/{{this.id}}/replies">
-            Show
-          </a>
-        </button>
         <form action="/admin/reply/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
           <button type="submit" class="btn btn-link">Delete</button>
         </form>
