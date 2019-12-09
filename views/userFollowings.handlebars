@@ -1,3 +1,83 @@
+<div class="card mb-3">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+
+            <div class="card-body">
+                {{#if profile.avatar}}
+                <img class="img-thumbnail" src="{{profile.avatar}}" />
+                {{else}}
+                <img src="https://via.placeholder.com/300" width="300px" height="300px" />
+                {{/if}}
+                <h5 class="card-title">{{profile.name}}</h5>
+                <p class="card-text">
+                    {{profile.introduction}}
+                </p>
+                <ul class="list-unstyled list-inline">
+                    <li><a href="/users/{{profile.id}}/tweets">Tweet <strong>{{profile.Tweets.length}}</strong></a></li>
+                    <li><a href="/users/{{profile.id}}/followings">followings
+                            <strong>{{profile.Followings.length}}</strong></a>
+                    </li>
+                    <li><a href="/users/{{profile.id}}/followers">followers
+                            <strong>{{profile.Followers.length}}</strong></a></li>
+                    <li><a href="/users/{{profile.id}}/likes">Like <strong>{{profile.Likes.length}}</strong></a></li>
+                </ul>
+                <p>
+                    {{#ifCond profile.id user.id }}
+                    <a href="/users/{{profile.id}}/edit"><button type="submit" class="btn btn-primary">Edit
+                            Profile</button></a>
+                    {{else}}
+                    {{#if this.isFollowed }}
+                    <form action="/following/{{profile.id}}?_method=DELETE" method="POST" style="display: contents;">
+                        <button type="submit" class="btn btn-danger">unFollow</button></form>
+                    {{else}}
+                    <form action="/following/{{profile.id}}" method="POST" style="display: contents;"><button
+                            type="submit" class="btn btn-primary">Follow</button></form>
+                    {{/if}}
+                    {{/ifCond}}
+                </p>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h1>Followings</h1>
+            <div class="card-body">
+                <div class="container">
+                    {{#each Followings}}
+                    <div class="row">
+                        <div class="col-md-4"><img class="img-thumbnail" src="{{this.avatar}}"></div>
+                        <div class="col-md-8">
+                            <h4>
+                                <a href="/users/{{this.id}}/tweets">{{this.name}}</a>
+                                <!--
+                                <small>{{moment this.createdAt}}</small>
+                                <small>following: {{moment this.Followship.dataValues.createdAt}}</small>
+                                -->
+                            </h4>
+                            <p>{{this.introduction}}</p>
+
+
+                            {{#if this.isFollowed }}
+                            <form action="/following/{{this.id}}?_method=DELETE" method="POST"
+                                style="display: contents;"><button type="submit"
+                                    class="btn btn-danger">unFollow</button></form>
+                            {{else}}
+                            <form action="/following/{{this.id}}" method="POST" style="display: contents;"><button
+                                    type="submit" class="btn btn-primary">Follow</button></form>
+                            {{/if}}
+
+
+
+                        </div>
+                    </div>
+                    <hr>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+
 <br>
 <br>
 <h1>Followings</h1>
@@ -6,7 +86,7 @@
 <h2>{{user.name}}</h2>
 <br>
 
-{{#each user.Followings}}
+{{#each Followings}}
 
 following : {{this.name}}<br>
 user created : {{moment this.createdAt}}<br>
@@ -15,6 +95,8 @@ following created : {{moment this.Followship.dataValues.createdAt}}<br>
 {{this.introduction}}<br>
 
 <form action="/followships/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
-    class="btn btn-danger">Unfollow</button></form>
+        class="btn btn-danger">Unfollow</button></form>
 
 {{/each}}
+
+-->

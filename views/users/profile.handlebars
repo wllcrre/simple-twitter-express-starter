@@ -13,10 +13,11 @@
           {{profile.introduction}}
         </p>
         <ul class="list-unstyled list-inline">
-          <li>Tweet <strong>{{profile.Tweets.length}}</strong></li>
-          <li>followings <strong>{{profile.Followings.length}}</strong></li>
-          <li>followers <strong>{{profile.Followers.length}}</strong></li>
-          <li>Like <strong>{{profile.Likes.length}}</strong></li>
+          <li><a href="/users/{{profile.id}}/tweets">Tweet <strong>{{profile.Tweets.length}}</strong></a></li>
+          <li><a href="/users/{{profile.id}}/followings">followings <strong>{{profile.Followings.length}}</strong></a>
+          </li>
+          <li><a href="/users/{{profile.id}}/followers">followers <strong>{{profile.Followers.length}}</strong></a></li>
+          <li><a href="/users/{{profile.id}}/likes">Like <strong>{{profile.Likes.length}}</strong></a></li>
         </ul>
         <p>
           {{#ifCond profile.id user.id }}

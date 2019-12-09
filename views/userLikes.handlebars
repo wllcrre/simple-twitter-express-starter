@@ -1,17 +1,97 @@
+<div class="card mb-3">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+
+      <div class="card-body">
+        {{#if profile.avatar}}
+        <img class="img-thumbnail" src="{{profile.avatar}}" />
+        {{else}}
+        <img src="https://via.placeholder.com/300" width="300px" height="300px" />
+        {{/if}}
+        <h5 class="card-title">{{profile.name}}</h5>
+        <p class="card-text">
+          {{profile.introduction}}
+        </p>
+        <ul class="list-unstyled list-inline">
+          <li><a href="/users/{{profile.id}}/tweets">Tweet <strong>{{profile.Tweets.length}}</strong></a></li>
+          <li><a href="/users/{{profile.id}}/followings">followings <strong>{{profile.Followings.length}}</strong></a>
+          </li>
+          <li><a href="/users/{{profile.id}}/followers">followers <strong>{{profile.Followers.length}}</strong></a></li>
+          <li><a href="/users/{{profile.id}}/likes">Like <strong>{{profile.Likes.length}}</strong></a></li>
+        </ul>
+        <p>
+          {{#ifCond profile.id user.id }}
+          <a href="/users/{{profile.id}}/edit"><button type="submit" class="btn btn-primary">Edit
+              Profile</button></a>
+          {{else}}
+          {{#if this.isFollowed }}
+          <form action="/following/{{profile.id}}?_method=DELETE" method="POST" style="display: contents;">
+            <button type="submit" class="btn btn-danger">unFollow</button></form>
+          {{else}}
+          <form action="/following/{{profile.id}}" method="POST" style="display: contents;"><button type="submit"
+              class="btn btn-primary">Follow</button></form>
+          {{/if}}
+          {{/ifCond}}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <h1>Like</h1>
+      <div class="card-body">
+        <div class="container">
+          {{#each LikedTweets}}
+          <div class="row">
+            <div class="col-md-4">
+              <a href="/users/{{this.User.id}}/tweets"><img class="img-thumbnail" src="{{this.User.avatar}}"></a>
+
+            </div>
+            <div class="col-md-8">
+              <h4>
+                <a href="/users/{{this.User.id}}/tweets">{{this.User.name}}</a>
+
+                <small>{{moment this.Like.dataValues.createdAt}}</small>
+
+
+              </h4>
+
+
+              <a style="color: #7d6969;" href="/tweets/{{this.id}}/replies">
+                <p>{{this.description}}</p>
+              </a>
+
+              Likes({{this.LikedUsers.length}})<br>
+              <a href="/tweets/{{this.id}}/replies">Replies({{this.Replies.length}})</a><br>
+              </a>
+
+            </div>
+          </div>
+          <hr>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--
+
 <br>
 <br>
-<h1>Like</h1>
+<h1>Likexxxx</h1>
 <br>
 
 <h2>{{user.name}}</h2>
 <br>
 
-{{#each user.LikedTweets}}
+{{#each LikedTweets}}
 {{this.User.name}}<br>
-Like Time:{{moment this.Like.createdAt}}<br>
+Like Time:{{moment this.Like111111111.createdAt}}<br>
 Tweet Time:{{moment this.User.createdAt}}<br>
 {{this.description}}<br>
 Likes : {{this.LikedUsers.length}}<br>
 Replies : {{this.Replies.length}}<br>
 ----------------<br>
 {{/each}}
+
+-->

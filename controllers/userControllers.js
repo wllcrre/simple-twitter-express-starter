@@ -19,14 +19,30 @@ const userController = {
             model: Tweet,
             as: "LikedTweets",
             include: [
-              { model: User },
-              { model: Reply },
+              { model: User, attributes: ['id', 'name', 'avatar'] },
+              { model: Reply, attributes: ['id'] },
               {
                 model: User,
-                as: "LikedUsers"
+                as: "LikedUsers",
+                attributes: ['id']
               }
             ]
+          },
+          {
+            model: Like,
+            attributes: ['id']
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id']
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id']
           }
+
         ]
     }).then(user => {
       // console.log(user.LikedTweets)
@@ -39,59 +55,72 @@ const userController = {
       // })
 
       // user.LikedTweets = user.LikedTweets.sort((a, b) => b.createdAt - a.createdAt)
-      user.LikedTweets = user.LikedTweets.sort((a, b) => b.Like.dataValues.createdAt - a.Like.dataValues.createdAt)
+      LikedTweets = user.LikedTweets.sort((a, b) => b.Like.dataValues.createdAt - a.Like.dataValues.createdAt)
 
-      return res.render('userLikes', { user: user })
+      return res.render('userLikes', {
+        profile: user,
+        LikedTweets: LikedTweets
+      })
     })
   },
 
   getUserFollowings: (req, res) => {
     return User.findByPk(req.params.id, {
-      include:
-        [
-          {
-            model: User,
-            as: "Followings"
-          }
-        ]
-    }).then(user => {
-      // console.log(user.Followings)
 
-      // console.log('====================')
-      // console.log('====================')
-      // user.Followings.forEach((user) => {
-      //   console.log(user.createdAt)
-      //   console.log(user.Followship.dataValues.createdAt)
-      // })
+      include: [
+        Tweet,
+        Like,
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
+    }).then(user => {
 
       //排序依照追蹤紀錄成立的時間，愈新的在愈前面
-      user.Followings = user.Followings.sort((a, b) => b.Followship.dataValues.createdAt - a.Followship.dataValues.createdAt)
-      return res.render('userFollowings', { user: user })
+      Followings = user.Followings.sort((a, b) => b.Followship.dataValues.createdAt - a.Followship.dataValues.createdAt)
+
+      Followings = user.Followings.map(user => ({
+        ...user.dataValues,
+        introduction: user.dataValues.introduction ? user.dataValues.introduction.substring(0, 140) : "",
+        isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+      }))
+
+      user.introduction = user.introduction.substring(0, 140)
+
+      return res.render('userFollowings', {
+        profile: user,
+        Followings: Followings
+      })
+
     })
   },
 
   getUserFollowers: (req, res) => {
     return User.findByPk(req.params.id, {
-      include:
-        [
-          {
-            model: User,
-            as: "Followers"
-          }
-        ]
-    }).then(user => {
-      // console.log(user.Followings)
 
-      // console.log('====================')
-      // console.log('====================')
-      // user.Followings.forEach((user) => {
-      //   console.log(user.createdAt)
-      //   console.log(user.Followship.dataValues.createdAt)
-      // })
+      include: [
+        Tweet,
+        Like,
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
+    }).then(user => {
 
       //排序依照追蹤紀錄成立的時間，愈新的在愈前面
-      user.Followers = user.Followers.sort((a, b) => b.Followship.dataValues.createdAt - a.Followship.dataValues.createdAt)
-      return res.render('userFollowers', { user: user })
+      Followers = user.Followers.sort((a, b) => b.Followship.dataValues.createdAt - a.Followship.dataValues.createdAt)
+
+      Followers = user.Followers.map(user => ({
+        ...user.dataValues,
+        introduction: user.dataValues.introduction ? user.dataValues.introduction.substring(0, 140) : "",
+        isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+      }))
+
+      user.introduction = user.introduction.substring(0, 140)
+
+      return res.render('userFollowers', {
+        profile: user,
+        Followers: Followers
+      })
+
     })
   },
 
@@ -106,7 +135,7 @@ const userController = {
       ]
     }).then(user => {
       const isFollowed = req.user.Followings.map(d => d.id).includes(user.id)
-      user.introduction = user.introduction.substring(0, 140)
+      user.introduction = user.introduction ? user.introduction.substring(0, 140) : ""
 
       Tweet.findAll({
         where: { UserId: req.params.id },

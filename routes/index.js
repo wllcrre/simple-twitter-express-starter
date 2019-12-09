@@ -32,9 +32,9 @@ module.exports = (app, passport) => { // 記得這邊要接收 passport
   app.post('/tweets/:tweet_id/replies', authenticated, tweetController.postReply)
 
   app.get('/', authenticated, (req, res) => res.render('tweets'))
-  app.get('/users/:id/likes', userController.getUserLikes)
-  app.get('/users/:id/followings', userController.getUserFollowings)
-  app.get('/users/:id/followers', userController.getUserFollowers)
+  app.get('/users/:id/likes', authenticated, userController.getUserLikes)
+  app.get('/users/:id/followings', authenticated, userController.getUserFollowings)
+  app.get('/users/:id/followers', authenticated, userController.getUserFollowers)
 
   app.get('/users/:id/tweets', authenticated, userController.getUser)
   app.get('/users/:id/edit', authenticated, userController.editUser)
