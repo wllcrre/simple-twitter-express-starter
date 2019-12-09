@@ -57,6 +57,11 @@ const userController = {
       // user.LikedTweets = user.LikedTweets.sort((a, b) => b.createdAt - a.createdAt)
       LikedTweets = user.LikedTweets.sort((a, b) => b.Like.dataValues.createdAt - a.Like.dataValues.createdAt)
 
+      LikedTweets = LikedTweets.map(tweet => ({
+        ...tweet.dataValues,
+        description: tweet.dataValues.description.substring(0, 140)
+      }))
+
       return res.render('userLikes', {
         profile: user,
         LikedTweets: LikedTweets
